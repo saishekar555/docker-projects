@@ -1,0 +1,38 @@
+services:
+
+  snipeit:
+    image: snipe/snipe-it:latest
+    container_name: snipeit
+    restart: always
+
+    ports:
+      - "8085:80"
+
+    environment:
+      APP_URL: http://20.235.76.119:8085
+      APP_KEY: base64:Laus0HIIl4dRCc5OIwSe2QOHiURLEZcoy3nnAwi+HzA=
+      MYSQL_PORT_3306_TCP_ADDR: db
+      MYSQL_PORT_3306_TCP_PORT: 3306
+      MYSQL_DATABASE: snipeit
+      MYSQL_USER: snipeit
+      MYSQL_PASSWORD: password123
+
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:10.5
+    container_name: snipeit-db
+    restart: always
+
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: snipeit
+      MYSQL_USER: snipeit
+      MYSQL_PASSWORD: password123
+
+    volumes:
+      - snipeit-db:/var/lib/mysql
+
+volumes:
+  snipeit-db:
